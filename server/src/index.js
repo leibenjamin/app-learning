@@ -1,4 +1,6 @@
 // server/src/index.js  (CommonJS version for simplicity on Render)
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
