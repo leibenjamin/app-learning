@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 200">
+  <defs>
+    <style>
+      .label { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; }
+      .organ { fill: #A5B4FC; stroke: #4338CA; stroke-width: 1; }
+      .arrow { stroke: #1F2937; stroke-width: 1.5; marker-end: url(#arrowhead); }
+      .hormone { font-family: Arial, sans-serif; font-size: 8px; fill: #4B5563; }
+    </style>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1F2937" />
+    </marker>
+  </defs>
+  
+  <text class="label" x="125" y="15">Hypothalamus</text>
+  <ellipse class="organ" cx="125" cy="30" rx="30" ry="15"/>
+  
+  <line class="arrow" x1="125" y1="45" x2="125" y2="80" />
+  <text class="hormone" x="140" y="65">CRH</text>
+  
+  <text class="label" x="125" y="105">Pituitary Gland</text>
+  <ellipse class="organ" cx="125" cy="85" rx="20" ry="10"/>
+  
+  <line class="arrow" x1="125" y1="95" x2="125" y2="130" />
+  <text class="hormone" x="140" y="115">ACTH</text>
+  
+  <text class="label" x="125" y="165">Adrenal Gland</text>
+  <path class="organ" d="M100,150 Q125,130 150,150 Q125,155 100,150 Z" />
+  
+  <text class="hormone" x="160" y="140">Cortisol</text>
+</svg>
