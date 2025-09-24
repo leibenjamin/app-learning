@@ -39,6 +39,10 @@ app.use(cors({
 
 app.use(express.json());
 
+app.get('/api/v1/health/db', (_req, res) => {
+  res.json({ mongoState: mongoose.connection.readyState }); // 1 = connected
+});
+
 // --- Database ---
 const mongoURI = process.env.MONGO_URI;
 // On Render you MUST set MONGO_URI to a cloud MongoDB (e.g., Atlas).
@@ -46,7 +50,9 @@ if (!mongoURI) {
   console.warn('⚠️ MONGO_URI is not set. In Render → your service → Environment, add MONGO_URI.');
 }
 
-mongoose.connect(mongoURI, {})  // Mongoose v7+ sensible defaults
+const DB_NAME = process.env.MONGO_DB_NAME || 'neurolearn';
+mongoose.connect(mongoURI, { dbName: DB_NAME });
+  // Mongoose v7+ sensible defaults
   .then(async () => {
     console.log('MongoDB connected');
     if (process.env.SEED_ON_BOOT === 'true') {
