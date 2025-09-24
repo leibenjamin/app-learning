@@ -25,21 +25,25 @@ const LessonsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchLessons = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/v1/lessons`);
-        if (!res.ok) throw new Error(`Request failed: ${res.status} ${res.statusText}`);
-        const data = await res.json();
-        setLessons(data.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+	  const fetchLessons = async () => {
+		try {
+		  const res = await fetch(`${API_BASE}/api/v1/lessons`, {
+			headers: { 'Accept': 'application/json' }
+		  });
+		  if (!res.ok) throw new Error(`Request failed: ${res.status} ${res.statusText}`);
+		  const json = await res.json();
 
-    fetchLessons();
-  }, []);
+		  // Accept {data:[...]}, {lessons:[...]}, or just [...]
+		  const items = json?.data ?? json?.lessons ?? json;
+		  setLessons(Array.isArray(items) ? items : []);
+		} catch (err) {
+		  setError(err.message);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+	  fetchLessons();
+	}, []);
 
   if (loading) return <div className="text-center mt-20">Loading...</div>;
   if (error)   return <div className="text-center mt-20 text-red-500">Error: {error}</div>;
