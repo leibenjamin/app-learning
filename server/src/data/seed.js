@@ -25,7 +25,7 @@ const lessons = [
   {
     module: 1, order: 2, title: "The Amygdala: The Brain's Alarm System",
     content: "Deep within the brain's temporal lobes lies the amygdala, an almond-shaped set of neurons that serves as the primary hub for processing emotions, emotional behavior, and motivation. It is most known for its role in processing fear and forming fear-related memories. When you perceive a threat, the amygdala rapidly activates the 'fight or flight' response before your conscious mind has even had time to fully process the situation. In anxiety disorders, the amygdala can become hyper-responsive, triggering intense fear reactions to situations that are not genuinely threatening.",
-    visuals: [{ type: 'image', url: '/images/amygdala.svg', caption: "A diagram showing the location of the amygdala." }],
+    visuals: [{ type: 'image', url: 'images/amygdala.svg', caption: "A diagram showing the location of the amygdala." }],
     quiz: [
       { factId: "1-2-A", questions: [
           { questionText: "Where is the amygdala located?", options: ["In the frontal lobe", "In the temporal lobe", "In the cerebellum", "On the brain's surface"], correctAnswerIndex: 1 },
@@ -96,7 +96,7 @@ const lessons = [
   {
     module: 2, order: 6, title: 'The HPA Axis: The Stress Response',
     content: "The Hypothalamic-Pituitary-Adrenal (HPA) Axis is the body's central stress response system. When the amygdala sounds the alarm, the hypothalamus releases a hormone that tells the pituitary gland to release another hormone, which in turn tells the adrenal glands to release cortisol, the primary stress hormone. This cascade prepares the body for 'fight or flight'. Chronic anxiety can lead to a dysregulated HPA Axis, causing prolonged high levels of cortisol, which can have negative effects on the body and brain over time.",
-    visuals: [{ type: 'image', url: '/images/hpa_axis.svg', caption: "A diagram of the HPA Axis feedback loop." }],
+    visuals: [{ type: 'image', url: 'images/hpa_axis.svg', caption: "A diagram of the HPA Axis feedback loop." }],
     quiz: [
       { factId: "2-6-A", questions: [
           { questionText: "What is the final hormone released by the HPA Axis during the stress response?", options: ["Adrenaline", "GABA", "Cortisol", "Serotonin"], correctAnswerIndex: 2 },

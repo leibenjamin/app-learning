@@ -3,6 +3,15 @@ import { motion } from 'framer-motion';
 import Quiz from './Quiz';
 import GlossaryTerm from './GlossaryTerm';
 
+// at the top (after imports)
+const resolvePublicUrl = (u) => {
+  if (!u) return '';
+  if (/^https?:\/\//i.test(u)) return u;       // absolute http(s) stays as-is
+  const trimmed = u.replace(/^\/+/, '');       // drop leading slash
+  return `${import.meta.env.BASE_URL}${trimmed}`; // e.g. /app-learning/images/...
+};
+
+
 const glossary = {
   "amygdala": "A collection of cells near the base of the brain responsible for processing strong emotions like fear and pleasure.",
   "neurotransmitter": "A chemical messenger that carries, boosts, and balances signals between neurons and other cells in the body.",
