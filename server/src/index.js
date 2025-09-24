@@ -26,11 +26,15 @@ const ALLOWED_ORIGINS = [
 // CORS: origins are scheme + host only (no paths)
 app.use(cors({
   origin(origin, cb) {
-    if (!origin) return cb(null, true); // allow curl / server-to-server
+    if (!origin) return cb(null, true);                 // allow curl/server-to-server
     if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
-    return cb(new Error(`CORS blocked for origin: ${origin}`));
+    return cb(null, false);                             // politely deny (no 500)
   },
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  // credentials: true, // keep OFF unless you actually use cookies/auth headers
 }));
+
 
 app.use(express.json());
 
