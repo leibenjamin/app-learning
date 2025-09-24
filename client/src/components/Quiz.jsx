@@ -1,5 +1,9 @@
 import React, { useState, useMemo } from 'react';
 
+// Add an API base that works in dev and prod
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+
+
 // Helper function to get a random integer
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -19,39 +23,42 @@ const Quiz = ({ questions: questionPools, lessonId }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSelect = (questionIndex, optionIndex) => {
-    setSelectedAnswers({
-      ...selectedAnswers,
-      [questionIndex]: optionIndex,
-    });
+    setSelectedAnswers(prev => ({ ...prev, [questionIndex]: optionIndex }));
   };
 
   const handleSubmit = async () => {
     setIsSubmitted(true);
-    
-    let correctCount = 0;
-    shuffledQuestions.forEach((q, qIndex) => {
-      if (selectedAnswers[qIndex] === q.correctAnswerIndex) {
-        correctCount++;
-      }
-    });
+
+    // compute score
+    const correctCount = shuffledQuestions.reduce((acc, q, i) =>
+      acc + (selectedAnswers[i] === q.correctAnswerIndex ? 1 : 0), 0);
 
     try {
-      await fetch('/api/v1/users/submit-quiz', {
+      // 🔧 2) Use the Render base url
+      const res = await fetch(`${API_BASE}/api/v1/users/submit-quiz`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
-          userId: 'static_user_123', // Using a static ID for this demo
+          userId: 'static_user_123',
           lessonId,
           correct: correctCount,
           total: shuffledQuestions.length,
         }),
+        // mode: 'cors' // not required (default), but harmless to keep
       });
-    } catch (error) {
-      console.error("Failed to submit quiz score:", error);
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`Submit failed: ${res.status} ${res.statusText} ${text}`);
+      }
+    } catch (err) {
+      console.error('Failed to submit quiz score:', err);
+      setSubmitError('Could not submit score. Please try again.');
     }
   };
 
-  const allQuestionsAnswered = Object.keys(selectedAnswers).length === shuffledQuestions.length;
+  const allQuestionsAnswered = shuffledQuestions.length > 0 &&
+    Object.keys(selectedAnswers).length === shuffledQuestions.length;
 
   return (
     <div className="mt-6 border-t-2 border-gray-200 pt-6">
