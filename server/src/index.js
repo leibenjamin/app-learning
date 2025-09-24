@@ -44,17 +44,19 @@ app.get('/api/v1/health/db', (_req, res) => {
 });
 
 // --- Database ---
+const DB_NAME = process.env.MONGO_DB_NAME || 'neurolearn';
 const mongoURI = process.env.MONGO_URI;
-// On Render you MUST set MONGO_URI to a cloud MongoDB (e.g., Atlas).
+
 if (!mongoURI) {
   console.warn('⚠️ MONGO_URI is not set. In Render → your service → Environment, add MONGO_URI.');
 }
 
-const DB_NAME = process.env.MONGO_DB_NAME || 'neurolearn';
-mongoose.connect(mongoURI, { dbName: DB_NAME });
-  // Mongoose v7+ sensible defaults
-  .then(async () => {
+// start server only after DB is ready
+(async () => {
+  try {
+    await mongoose.connect(mongoURI, { dbName: DB_NAME });
     console.log('MongoDB connected');
+
     if (process.env.SEED_ON_BOOT === 'true') {
       try {
         await seedDB();
@@ -63,21 +65,21 @@ mongoose.connect(mongoURI, { dbName: DB_NAME });
         console.error('Seed error:', e);
       }
     }
-  })
-  .catch(err => {
+
+    // --- Routes ---
+    app.use('/api/v1/lessons', lessons);
+    app.use('/api/v1/users', users);
+
+    app.get('/', (_req, res) => {
+      res.send('Hello from NeuroLearn Backend!');
+    });
+
+    // --- Start ---
+    app.listen(PORT, HOST, () => {
+      console.log(`Server listening on http://${HOST}:${PORT}`);
+    });
+  } catch (err) {
     console.error('Mongo connection error:', err);
     process.exit(1);
-  });
-
-// --- Routes ---
-app.use('/api/v1/lessons', lessons);
-app.use('/api/v1/users', users);
-
-app.get('/', (_req, res) => {
-  res.send('Hello from NeuroLearn Backend!');
-});
-
-// --- Start ---
-app.listen(PORT, HOST, () => {
-  console.log(`Server listening on http://${HOST}:${PORT}`);
-});
+  }
+})();
