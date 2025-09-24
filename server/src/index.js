@@ -20,6 +20,7 @@ const HOST = '0.0.0.0'; // bind all interfaces for Render
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',          // Vite dev
   'https://leibenjamin.github.io',     // GitHub Pages (user or project page)
+  'https://www.benlei.org',
   'https://benlei.org',           // ← optional if you also serve there
 ];
 
